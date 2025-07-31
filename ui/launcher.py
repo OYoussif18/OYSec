@@ -517,6 +517,247 @@ terminal_check_sudo_output = ctk.CTkLabel(
 )
 terminal_check_sudo_output.pack(pady=5, padx=10, fill="both", expand=True)
 
+# ---- Find SUID Binaries Section ----
+find_suid_binaries_section = ctk.CTkFrame(privesc_frame)
+find_suid_binaries_section.pack(pady=10, fill="x")
+
+find_suid_binaries_button_page_button = ctk.CTkButton(
+    find_suid_binaries_section,
+    text="Find SUID Binaries",
+    command=lambda: show_frame(find_suid_binaries_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+find_suid_binaries_button_page_button.pack(pady=5)
+
+# UI for Find SUID Binaries Page
+ctk.CTkButton(
+    find_suid_binaries_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(find_suid_binaries_page, text="Find SUID Binaries").pack(pady=5)
+def run_find_suid_binaries():
+    output = find_suid_binaries()
+    terminal_find_suid_output.configure(text=output)
+    pyperclip.copy("find / -perm -4000 -type f 2>/dev/null")
+
+find_suid_binaries_button = ctk.CTkButton(
+    find_suid_binaries_page,
+    text="Copy Command",
+    command=run_find_suid_binaries,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+find_suid_binaries_button.pack(pady=5)
+
+terminal_find_suid_output = ctk.CTkLabel(
+    find_suid_binaries_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_find_suid_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Get Kernel Version Section ----
+get_kernel_version_section = ctk.CTkFrame(privesc_frame)
+get_kernel_version_section.pack(pady=10, fill="x")
+
+get_kernel_version_button_page_button = ctk.CTkButton(
+    get_kernel_version_section,
+    text="Get Kernel Version",
+    command=lambda: show_frame(get_kernel_version_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+get_kernel_version_button_page_button.pack(pady=5)
+
+# UI for Get Kernel Version Page
+ctk.CTkButton(
+    get_kernel_version_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(get_kernel_version_page, text="Get Kernel Version").pack(pady=5)
+def run_get_kernel_version():
+    output = get_kernel_version()
+    terminal_get_kernel_output.configure(text=output)
+    pyperclip.copy("uname -r")
+get_kernel_version_button = ctk.CTkButton(
+    get_kernel_version_page,
+    text="Copy Command",
+    command=run_get_kernel_version,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+get_kernel_version_button.pack(pady=5)
+
+terminal_get_kernel_output = ctk.CTkLabel(
+    get_kernel_version_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_get_kernel_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Find Writable Files Section ----
+find_writable_files_section = ctk.CTkFrame(privesc_frame)
+find_writable_files_section.pack(pady=10, fill="x")
+
+find_writable_files_button_page_button = ctk.CTkButton(
+    find_writable_files_section,
+    text="Find Writable Files",
+    command=lambda: show_frame(find_writable_files_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+find_writable_files_button_page_button.pack(pady=5)
+
+# UI for Find Writable Files Page
+ctk.CTkButton(
+    find_writable_files_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(find_writable_files_page, text="Find Writable Files").pack(pady=5)
+def run_find_writable_files():
+    output = find_writable_files()
+    terminal_find_writable_output.configure(text=output)
+    pyperclip.copy("find / -writable -type f 2>/dev/null")
+find_writable_files_button = ctk.CTkButton(
+    find_writable_files_page,
+    text="Copy Command",
+    command=run_find_writable_files,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+find_writable_files_button.pack(pady=5)
+
+terminal_find_writable_output = ctk.CTkLabel(
+    find_writable_files_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_find_writable_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Check Cron Jobs Section ----
+check_cron_jobs_section = ctk.CTkFrame(privesc_frame)
+check_cron_jobs_section.pack(pady=10, fill="x")
+
+check_cron_jobs_button_page_button = ctk.CTkButton(
+    check_cron_jobs_section,
+    text="Check Cron Jobs",
+    command=lambda: show_frame(check_cron_jobs_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+check_cron_jobs_button_page_button.pack(pady=5)
+
+# UI for Check Cron Jobs Page
+ctk.CTkButton(
+    check_cron_jobs_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(check_cron_jobs_page, text="Check Cron Jobs").pack(pady=5)
+def run_check_cron_jobs():
+    output = check_cron_jobs()
+    terminal_check_cron_output.configure(text=output)
+    pyperclip.copy("cat /etc/crontab; ls -l /etc/cron*")
+check_cron_jobs_button = ctk.CTkButton(
+    check_cron_jobs_page,
+    text="Copy Command",
+    command=run_check_cron_jobs,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+check_cron_jobs_button.pack(pady=5)
+
+terminal_check_cron_output = ctk.CTkLabel(
+    check_cron_jobs_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_check_cron_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Search for Credentials Section ----
+search_for_credentials_section = ctk.CTkFrame(privesc_frame)
+search_for_credentials_section.pack(pady=10, fill="x")
+
+search_for_credentials_button_page_button = ctk.CTkButton(
+    search_for_credentials_section,
+    text="Search for Credentials",
+    command=lambda: show_frame(search_for_credentials_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+search_for_credentials_button_page_button.pack(pady=5)
+
+# UI for Search for Credentials Page
+ctk.CTkButton(
+    search_for_credentials_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(search_for_credentials_page, text="Search for Credentials").pack(pady=5)
+def run_search_for_credentials():
+    output = search_for_credentials()
+    terminal_search_credentials_output.configure(text=output)
+    pyperclip.copy("grep -ri 'password\\|passwd\\|secret\\|key' /home 2>/dev/null")
+search_for_credentials_button = ctk.CTkButton(
+    search_for_credentials_page,
+    text="Copy Command",
+    command=run_search_for_credentials,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+search_for_credentials_button.pack(pady=5)
+
+terminal_search_credentials_output = ctk.CTkLabel(
+    search_for_credentials_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_search_credentials_output.pack(pady=5, padx=10, fill="both", expand=True)
+
 # --------------------------- #
 # Utils Page - Placeholder for now
 # --------------------------- #
