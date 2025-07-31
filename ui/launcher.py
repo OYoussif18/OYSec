@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import os
 import sys
+import pyperclip
 
 # Add core folder to sys.path so we can import our modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -34,13 +35,34 @@ app.iconbitmap(icon_path)
 # --------------------------- #
 home_frame = ctk.CTkFrame(app)
 recon_frame = ctk.CTkScrollableFrame(app)
+# recon frames
 fast_nmap_page = ctk.CTkFrame(app) 
 full_nmap_page = ctk.CTkFrame(app)
 gobuster_page = ctk.CTkFrame(app)
 http_headers_page = ctk.CTkFrame(app)
 run_command_page = ctk.CTkFrame(app)
+#____________________________________
 privesc_frame = ctk.CTkFrame(app)
+#privesc frames
+reverse_shell_listener_page = ctk.CTkFrame(app)
+check_sudo_permissions_page = ctk.CTkFrame(app)
+find_suid_binaries_page = ctk.CTkFrame(app)
+get_kernel_version_page = ctk.CTkFrame(app)
+find_writable_files_page = ctk.CTkFrame(app)
+check_cron_jobs_page = ctk.CTkFrame(app)
+search_for_credentials_page = ctk.CTkFrame(app)
+#____________________________________
 utils_frame = ctk.CTkFrame(app)
+# utils frames
+encode_base64_page = ctk.CTkFrame(app)
+decode_base64_page = ctk.CTkFrame(app)
+url_encode_page = ctk.CTkFrame(app)
+url_decode_page = ctk.CTkFrame(app)
+random_user_agent_page = ctk.CTkFrame(app)
+decode_jwt_page = ctk.CTkFrame(app)
+generate_uuid_page = ctk.CTkFrame(app)
+#_____________________________________
+
 
 # --------------------------- #
 # Navigation: Frame Switching Function
@@ -379,8 +401,121 @@ terminal_run_command_output.pack(pady=5, padx=10, fill="both", expand=True)
 
 
 # --------------------------- #
-# Privesc Page - Placeholder for now
+# Privesc Page
 # --------------------------- #
+ 
+ # Back button on top to return to home
+back_button_privesc = ctk.CTkButton(privesc_frame, text="Back to Home", command=lambda: show_frame(home_frame), fg_color=default_color, hover_color=hover_color)
+back_button_privesc.pack(pady=10)
+
+# ---- Reverse Shell Listener Section ----
+reverse_shell_listener_section = ctk.CTkFrame(privesc_frame)
+reverse_shell_listener_section.pack(pady=10, fill="x")
+
+reverse_shell_listener_button_page_button = ctk.CTkButton(
+    reverse_shell_listener_section,
+    text="Reverse Shell Listener",
+    command=lambda: show_frame(reverse_shell_listener_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+reverse_shell_listener_button_page_button.pack(pady=5)
+
+# UI for Reverse Shell Listener Page
+ctk.CTkButton(
+    reverse_shell_listener_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(reverse_shell_listener_page, text="Reverse Shell Listener").pack(pady=5)
+
+reverse_shell_port_entry = ctk.CTkEntry(reverse_shell_listener_page, placeholder_text="Enter port")
+reverse_shell_port_entry.pack(pady=5, padx=10, fill="x")
+
+# Function to run Reverse Shell Listener
+def run_reverse_shell_listener():
+    port = reverse_shell_port_entry.get()
+    if port:
+        
+        reverse_shell_listener(port)
+        terminal_reverse_shell_output.configure(text=f"Listening on port {port}...")
+    else:
+        terminal_reverse_shell_output.configure(text="Please enter a port.")
+
+reverse_shell_listener_button = ctk.CTkButton(
+    reverse_shell_listener_page,
+    text="Start Listener",
+    command=run_reverse_shell_listener,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+reverse_shell_listener_button.pack(pady=5)
+
+terminal_reverse_shell_output = ctk.CTkLabel(
+    reverse_shell_listener_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_reverse_shell_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Check Sudo Permissions Section ----
+check_sudo_permissions_section = ctk.CTkFrame(privesc_frame)
+check_sudo_permissions_section.pack(pady=10, fill="x")
+
+check_sudo_permissions_button_page_button = ctk.CTkButton(
+    check_sudo_permissions_section,
+    text="Check Sudo Permissions",
+    command=lambda: show_frame(check_sudo_permissions_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+check_sudo_permissions_button_page_button.pack(pady=5)
+
+# UI for Check Sudo Permissions Page
+ctk.CTkButton(
+    check_sudo_permissions_page,
+    text="Back to Privesc",
+    command=lambda: show_frame(privesc_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(check_sudo_permissions_page, text="Check Sudo Permissions").pack(pady=5)
+
+def run_check_sudo_permissions():
+    output = check_sudo_permissions()
+    terminal_check_sudo_output.configure(text=output)
+    pyperclip.copy("sudo -l")
+
+
+check_sudo_permissions_button = ctk.CTkButton(
+    check_sudo_permissions_page,
+    text="Copy Command",
+    command=run_check_sudo_permissions,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+check_sudo_permissions_button.pack(pady=5)
+
+terminal_check_sudo_output = ctk.CTkLabel(
+    check_sudo_permissions_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_check_sudo_output.pack(pady=5, padx=10, fill="both", expand=True)
 
 # --------------------------- #
 # Utils Page - Placeholder for now
