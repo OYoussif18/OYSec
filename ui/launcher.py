@@ -42,7 +42,7 @@ gobuster_page = ctk.CTkFrame(app)
 http_headers_page = ctk.CTkFrame(app)
 run_command_page = ctk.CTkFrame(app)
 #____________________________________
-privesc_frame = ctk.CTkFrame(app)
+privesc_frame = ctk.CTkScrollableFrame(app)
 #privesc frames
 reverse_shell_listener_page = ctk.CTkFrame(app)
 check_sudo_permissions_page = ctk.CTkFrame(app)
@@ -52,7 +52,7 @@ find_writable_files_page = ctk.CTkFrame(app)
 check_cron_jobs_page = ctk.CTkFrame(app)
 search_for_credentials_page = ctk.CTkFrame(app)
 #____________________________________
-utils_frame = ctk.CTkFrame(app)
+utils_frame = ctk.CTkScrollableFrame(app)
 # utils frames
 encode_base64_page = ctk.CTkFrame(app)
 decode_base64_page = ctk.CTkFrame(app)
@@ -78,6 +78,20 @@ def show_frame(frame):
     gobuster_page.pack_forget()
     http_headers_page.pack_forget()
     run_command_page.pack_forget()
+    reverse_shell_listener_page.pack_forget()
+    check_sudo_permissions_page.pack_forget()
+    find_suid_binaries_page.pack_forget()
+    get_kernel_version_page.pack_forget()
+    find_writable_files_page.pack_forget()
+    check_cron_jobs_page.pack_forget()
+    search_for_credentials_page.pack_forget()
+    encode_base64_page.pack_forget()
+    decode_base64_page.pack_forget()
+    url_encode_page.pack_forget()
+    url_decode_page.pack_forget()
+    random_user_agent_page.pack_forget()
+    decode_jwt_page.pack_forget()
+    generate_uuid_page.pack_forget()
     # Show the requested frame
     frame.pack(fill="both", expand=True)
 
@@ -759,8 +773,386 @@ terminal_search_credentials_output = ctk.CTkLabel(
 terminal_search_credentials_output.pack(pady=5, padx=10, fill="both", expand=True)
 
 # --------------------------- #
-# Utils Page - Placeholder for now
+# Utils Page
 # --------------------------- #
+
+# Back button on top to return to home
+back_button_utils = ctk.CTkButton(utils_frame, text="Back to Home", command=lambda: show_frame(home_frame), fg_color=default_color, hover_color=hover_color)
+back_button_utils.pack(pady=10)
+
+# ---- Encode Base64 Section ----
+encode_base64_section = ctk.CTkFrame(utils_frame)
+encode_base64_section.pack(pady=10, fill="x")
+
+def run_encode_base64():
+    text = encode_base64_entry.get()
+    if text:
+        output = encode_base64(text)
+        terminal_encode_base64_output.configure(text=output)
+        pyperclip.copy(output)
+    else:
+        terminal_encode_base64_output.configure(text="Please enter text to encode.")
+encode_base64_button_page_button = ctk.CTkButton(
+    encode_base64_section,
+    text="Encode Base64",
+    command=lambda: show_frame(encode_base64_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+encode_base64_button_page_button.pack(pady=5)
+
+# UI for Encode Base64 Page
+ctk.CTkButton(
+    encode_base64_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(encode_base64_page, text="Encode to Base64").pack(pady=5)
+
+encode_base64_entry = ctk.CTkEntry(encode_base64_page, placeholder_text="Enter text to encode")
+encode_base64_entry.pack(pady=5, padx=10, fill="x")
+encode_base64_button = ctk.CTkButton(
+    encode_base64_page,
+    text="Encode",
+    command=run_encode_base64,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+encode_base64_button.pack(pady=5)
+
+terminal_encode_base64_output = ctk.CTkLabel(
+    encode_base64_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_encode_base64_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Decode Base64 Section ----
+decode_base64_section = ctk.CTkFrame(utils_frame)
+decode_base64_section.pack(pady=10, fill="x")
+
+def run_decode_base64():
+    text = decode_base64_entry.get()
+    if text:
+        output = decode_base64(text)
+        terminal_decode_base64_output.configure(text=output)
+        pyperclip.copy(output)
+    else:
+        terminal_decode_base64_output.configure(text="Please enter text to decode.")
+decode_base64_button_page_button = ctk.CTkButton(
+    decode_base64_section,
+    text="Decode Base64",
+    command=lambda: show_frame(decode_base64_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+decode_base64_button_page_button.pack(pady=5)
+
+# UI for Decode Base64 Page
+ctk.CTkButton(
+    decode_base64_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(decode_base64_page, text="Decode from Base64").pack(pady=5)
+
+decode_base64_entry = ctk.CTkEntry(decode_base64_page, placeholder_text="Enter Base64 text to decode")
+
+decode_base64_entry.pack(pady=5, padx=10, fill="x")
+decode_base64_button = ctk.CTkButton(
+    decode_base64_page,
+    text="Decode",
+    command=run_decode_base64,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+decode_base64_button.pack(pady=5)
+
+terminal_decode_base64_output = ctk.CTkLabel(
+    decode_base64_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_decode_base64_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- URL Encode Section ----
+url_encode_section = ctk.CTkFrame(utils_frame)
+url_encode_section.pack(pady=10, fill="x")
+
+def run_url_encode():
+    text = url_encode_entry.get()
+    if text:
+        output = url_encode(text)
+        terminal_url_encode_output.configure(text=output)
+        pyperclip.copy(output) 
+    else:
+        terminal_url_encode_output.configure(text="Please enter text to URL encode.")
+url_encode_button_page_button = ctk.CTkButton(
+    url_encode_section,
+    text="URL Encode",
+    command=lambda: show_frame(url_encode_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+url_encode_button_page_button.pack(pady=5)
+
+# UI for URL Encode Page
+ctk.CTkButton(
+    url_encode_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+ctk.CTkLabel(url_encode_page, text="URL Encode").pack(pady=5)
+
+url_encode_entry = ctk.CTkEntry(url_encode_page, placeholder_text="Enter text to URL encode")
+
+url_encode_entry.pack(pady=5, padx=10, fill="x")
+url_encode_button = ctk.CTkButton(
+    url_encode_page,
+    text="Encode",
+    command=run_url_encode,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+url_encode_button.pack(pady=5)
+terminal_url_encode_output = ctk.CTkLabel(
+    url_encode_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_url_encode_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- URL Decode Section ----
+url_decode_section = ctk.CTkFrame(utils_frame)
+url_decode_section.pack(pady=10, fill="x")
+
+def run_url_decode():
+    text = url_decode_entry.get()
+    if text:
+        output = url_decode(text)
+        terminal_url_decode_output.configure(text=output)
+        pyperclip.copy(output)
+    else:
+        terminal_url_decode_output.configure(text="Please enter text to URL decode.")
+url_decode_button_page_button = ctk.CTkButton(
+    url_decode_section,
+    text="URL Decode",
+    command=lambda: show_frame(url_decode_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+url_decode_button_page_button.pack(pady=5)
+# UI for URL Decode Page
+ctk.CTkButton(
+    url_decode_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(url_decode_page, text="URL Decode").pack(pady=5)
+
+url_decode_entry = ctk.CTkEntry(url_decode_page, placeholder_text="Enter URL encoded text to decode")
+url_decode_entry.pack(pady=5, padx=10, fill="x")
+
+url_decode_button = ctk.CTkButton(
+    url_decode_page,
+    text="Decode",
+    command=run_url_decode,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+url_decode_button.pack(pady=5)
+
+terminal_url_decode_output = ctk.CTkLabel(
+    url_decode_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_url_decode_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Random User Agent Section ----
+random_user_agent_section = ctk.CTkFrame(utils_frame)
+random_user_agent_section.pack(pady=10, fill="x")
+
+def run_random_user_agent():
+    output = random_user_agent()
+    terminal_random_user_agent_output.configure(text=output)
+    pyperclip.copy(output)
+random_user_agent_button_page_button = ctk.CTkButton(
+    random_user_agent_section,
+    text="Random User Agent",
+    command=lambda: show_frame(random_user_agent_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+random_user_agent_button_page_button.pack(pady=5)
+
+# UI for Random User Agent Page
+ctk.CTkButton(
+    random_user_agent_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(random_user_agent_page, text="Generate Random User Agent").pack(pady=5)
+
+random_user_agent_button = ctk.CTkButton(
+    random_user_agent_page,
+    text="Generate",
+    command=run_random_user_agent,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+random_user_agent_button.pack(pady=5)
+terminal_random_user_agent_output = ctk.CTkLabel(
+    random_user_agent_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_random_user_agent_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Decode JWT Section ----
+decode_jwt_section = ctk.CTkFrame(utils_frame)
+decode_jwt_section.pack(pady=10, fill="x")
+def run_decode_jwt():
+    jwt_token = decode_jwt_entry.get()
+    if jwt_token:
+        output = decode_jwt(jwt_token)
+        terminal_decode_jwt_output.configure(text=output)
+        pyperclip.copy(output)
+    else:
+        terminal_decode_jwt_output.configure(text="Please enter a JWT token.")
+
+decode_jwt_button_page_button = ctk.CTkButton(
+    decode_jwt_section,
+    text="Decode JWT",
+    command=lambda: show_frame(decode_jwt_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+decode_jwt_button_page_button.pack(pady=5)
+
+# UI for Decode JWT Page
+ctk.CTkButton(
+    decode_jwt_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(decode_jwt_page, text="Decode JWT Token").pack(pady=5)
+
+decode_jwt_entry = ctk.CTkEntry(decode_jwt_page, placeholder_text="Enter JWT token")
+decode_jwt_entry.pack(pady=5, padx=10, fill="x")
+
+decode_jwt_button = ctk.CTkButton(
+    decode_jwt_page,
+    text="Decode",
+    command=run_decode_jwt,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+decode_jwt_button.pack(pady=5)
+
+terminal_decode_jwt_output = ctk.CTkLabel(
+    decode_jwt_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_decode_jwt_output.pack(pady=5, padx=10, fill="both", expand=True)
+
+# ---- Generate UUID Section ----
+generate_uuid_section = ctk.CTkFrame(utils_frame)
+generate_uuid_section.pack(pady=10, fill="x")
+
+def run_generate_uuid():
+    output = generate_uuid()
+    terminal_generate_uuid_output.configure(text=output)
+    pyperclip.copy(output)
+generate_uuid_button_page_button = ctk.CTkButton(
+    generate_uuid_section,
+    text="Generate UUID",
+
+    command=lambda: show_frame(generate_uuid_page),
+    fg_color=default_color,
+    hover_color=hover_color
+)
+generate_uuid_button_page_button.pack(pady=5)
+
+# UI for Generate UUID Page
+ctk.CTkButton(
+    generate_uuid_page,
+    text="Back to Utils",
+    command=lambda: show_frame(utils_frame),
+    fg_color=default_color,
+    hover_color=hover_color
+).pack(pady=10)
+
+ctk.CTkLabel(generate_uuid_page, text="Generate UUID").pack(pady=5)
+
+generate_uuid_button = ctk.CTkButton(
+    generate_uuid_page,
+    text="Generate",
+    command=run_generate_uuid,
+    fg_color=default_color,
+    hover_color=hover_color
+)
+generate_uuid_button.pack(pady=5)
+
+terminal_generate_uuid_output = ctk.CTkLabel(
+    generate_uuid_page,
+    text="",
+    wraplength=300,
+    anchor="nw",
+    justify="left",
+    fg_color="#1e1e1e",
+    text_color="white",
+    corner_radius=5
+)
+terminal_generate_uuid_output.pack(pady=5, padx=10, fill="both", expand=True)
 
 # --------------------------- #
 # Start on Home Page
